@@ -24,9 +24,6 @@
 #include "BLEHIDDevice.h"
 #include "BLECharacteristic.h"
 
-#include "class/hid/hid.h"
-#include "class/hid/hid_device.h"
-
 #endif // USE_NIMBLE
 
 #include "Print.h"
@@ -36,8 +33,6 @@
 #define BLE_KEYBOARD_VERSION_MINOR 0
 #define BLE_KEYBOARD_VERSION_REVISION 4
 
-#ifndef KEY_LEFT_CTRL
-#define CREATE_KEYREPORT 1
 const uint8_t KEY_LEFT_CTRL = 0x80;
 const uint8_t KEY_LEFT_SHIFT = 0x81;
 const uint8_t KEY_LEFT_ALT = 0x82;
@@ -56,6 +51,7 @@ const uint8_t KEY_TAB = 0xB3;
 const uint8_t KEY_RETURN = 0xB0;
 const uint8_t KEY_ESC = 0xB1;
 const uint8_t KEY_INSERT = 0xD1;
+const uint8_t KEY_PRTSC = 0xCE;
 const uint8_t KEY_DELETE = 0xD4;
 const uint8_t KEY_PAGE_UP = 0xD3;
 const uint8_t KEY_PAGE_DOWN = 0xD6;
@@ -86,9 +82,7 @@ const uint8_t KEY_F21 = 0xF8;
 const uint8_t KEY_F22 = 0xF9;
 const uint8_t KEY_F23 = 0xFA;
 const uint8_t KEY_F24 = 0xFB;
-#endif
-// Keep the old key definitions for backwards capability
-const uint8_t KEY_PRTSC = 0xCE;
+
 const uint8_t KEY_NUM_0 = 0xEA;
 const uint8_t KEY_NUM_1 = 0xE1;
 const uint8_t KEY_NUM_2 = 0xE2;
@@ -125,7 +119,7 @@ const MediaKeyReport KEY_MEDIA_WWW_BACK = {0, 32};
 const MediaKeyReport KEY_MEDIA_CONSUMER_CONTROL_CONFIGURATION = {0, 64}; // Media Selection
 const MediaKeyReport KEY_MEDIA_EMAIL_READER = {0, 128};
 
-#ifdef CREATE_KEYREPORT
+
 //  Low level key report: up to 6 keys and shift, ctrl etc at once
 typedef struct
 {
@@ -133,7 +127,6 @@ typedef struct
   uint8_t reserved;
   uint8_t keys[6];
 } KeyReport;
-#endif
 
 class BleKeyboard : public Print, public BLEServerCallbacks, public BLECharacteristicCallbacks
 {
